@@ -1,5 +1,5 @@
 import ComponentPanel from '@/pages/_index/editor/ComponentPanel'
-import CanvasPanel from '@/pages/_index/editor/CanvasPanel'
+import CanvasEditor from '@/pages/_index/editor/CanvasEditor'
 import ConfigPanel from '@/pages/_index/editor/ConfigPanel'
 import { TopHeader } from '@/pages/_index/editor/TopHeader.tsx'
 
@@ -12,7 +12,7 @@ const Editor = () => {
       {/* 主要内容区域 */}
       <div className="flex-1 flex overflow-hidden">
         <ComponentPanel/>
-        <CanvasPanel/>
+        <CanvasEditor/>
         <ConfigPanel/>
       </div>
     </div>
