@@ -29,7 +29,6 @@ const ComponentPanel = () => {
                     <TooltipTrigger asChild>
                       <Card
                         className="cursor-pointer transition-all duration-200 hover:shadow-md group border-dashed border-2 hover:border-solid hover:border-primary/20"
-                        draggable
                       >
                         <CardContent className="p-4">
                           <div className="flex flex-col items-center space-y-2">
