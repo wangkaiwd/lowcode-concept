@@ -2,7 +2,7 @@ interface TextBlockProps {
   content: string;
 }
 
-const Text = ({ content }: TextBlockProps) => {
+const TextBlock = ({ content }: TextBlockProps) => {
   return (
     <div>
       {content}
@@ -10,4 +10,4 @@ const Text = ({ content }: TextBlockProps) => {
   )
 }
 
-export default Text
+export default TextBlock

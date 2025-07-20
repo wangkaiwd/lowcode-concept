@@ -2,9 +2,15 @@ import ComponentPanel from '@/pages/_index/editor/ComponentPanel'
 import CanvasEditor from '@/pages/_index/editor/CanvasEditor'
 import ConfigPanel from '@/pages/_index/editor/ConfigPanel'
 import { TopHeader } from '@/pages/_index/editor/TopHeader.tsx'
+import { useEffect } from 'react'
+import LayoutEngine from '@/core/layoutEngine.ts'
 
 // 主页面组件
 const Editor = () => {
+  useEffect(() => {
+    const layoutEngine = new LayoutEngine()
+    layoutEngine.init()
+  }, [])
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* 顶部工具栏 */}
