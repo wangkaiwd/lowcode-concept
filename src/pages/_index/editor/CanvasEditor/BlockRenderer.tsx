@@ -1,7 +1,8 @@
 import TextBlock from '@/blocks/TextBlock'
 import ButtonBlock from '@/blocks/ButtonBlock'
+import type { ComponentProps } from 'react'
 
-interface Props {
+interface Props extends ComponentProps<'div'> {
   block: any; // Define the type of block as needed
 }
 

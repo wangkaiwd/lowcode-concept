@@ -9,7 +9,11 @@ const CanvasEditor = () => {
   const renderBlocks = () => {
     if (!blocks.length) { return <Empty/> }
     return blocks.map((block) => {
-      return <BlockRenderer key={block.id} block={block}/>
+      return (
+        <div key={block.id} data-block-id={block.id}>
+          <BlockRenderer data-block-id={block.id} block={block}/>
+        </div>
+      )
     })
   }
 
@@ -19,6 +23,7 @@ const CanvasEditor = () => {
         <div className="max-w-7xl mx-auto h-full">
           {/* 画布区域 */}
           <Card
+            data-block-container={'root'}
             className="min-h-full p-6 border-2 border-dashed border-border/40 relative shadow-sm overflow-auto"
           >
             <CardContent className="p-0 h-full">
