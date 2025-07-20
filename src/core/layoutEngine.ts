@@ -62,14 +62,8 @@ class LayoutEngine {
     this.isDragging = false
     this.dragCoordinate = null
     this.currentBlockEl = null
-    if (this.overlay) {
-      document.body.removeChild(this.overlay)
-      this.overlay = null
-    }
-    if (this.dropIndicatorEl) {
-      document.body.removeChild(this.dropIndicatorEl)
-      this.dropIndicatorEl = null
-    }
+    this.removeOverlay()
+    this.removeDropIndicator()
     document.removeEventListener('mousemove', this.onMouseMove)
     document.removeEventListener('mouseup', this.onMouseUp)
   }
@@ -109,6 +103,13 @@ class LayoutEngine {
         rect,
       })
     })
+  }
+
+  removeOverlay = () => {
+    if (this.overlay) {
+      document.body.removeChild(this.overlay)
+      this.overlay = null
+    }
   }
 
   removeDropIndicator = () => {
