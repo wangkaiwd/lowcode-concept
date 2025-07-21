@@ -16,13 +16,13 @@ const CanvasEditor = () => {
   }
 
   return (
-    <div className="flex-1 bg-muted/20 flex flex-col">
-      <div className="flex-1 p-6">
+    <div className="flex-1 h-full bg-muted/20 flex flex-col">
+      <div className="flex-1 p-6 h-full">
         <div className="max-w-7xl mx-auto h-full">
           {/* 画布区域 */}
           <ContainerProvider containerId={'root'}>
             <Card
-              className="min-h-full p-6 border-2 border-dashed border-border/40 relative shadow-sm overflow-auto"
+              className="h-full p-6 border-2 border-dashed border-border/40 relative shadow-sm overflow-auto"
             >
               <CardContent className="p-0 h-full">
                 {renderBlocks()}

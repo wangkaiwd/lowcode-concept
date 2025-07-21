@@ -41,7 +41,7 @@ class LayoutEngine {
     this.listenToBody()
     this.createOverlay()
     this.createDropAreas()
-    this.debugIndicator()
+    document.body.style.cursor = 'grab'
   }
 
   onMouseMove = (ev: any) => {
@@ -71,6 +71,7 @@ class LayoutEngine {
       area.remove()
     })
     this.dropAreas = []
+    document.body.style.cursor = 'auto'
     document.removeEventListener('mousemove', this.onMouseMove)
     document.removeEventListener('mouseup', this.onMouseUp)
   }
@@ -119,42 +120,37 @@ class LayoutEngine {
       if (parentId && node !== this.currentBlock) {
         const parent = nodeMap.get(parentId)
         const direction = parent ? parent.dataset.containerDirection : 'top'
-        this.dropAreas.push({
-          id,
-          parentId,
-          direction,
-          node,
-        })
+        this.dropAreas.push({ id, parentId, direction, node })
       }
     })
   }
 
-  debugIndicator = () => {
-    this.dropAreas.forEach((area) => {
-      const rect = area.node.getBoundingClientRect()
-      const { width, height, left, top } = rect
-      const dom = document.createElement('div')
-      dom.setAttribute('data-area', 'true')
-      dom.style.position = 'absolute'
-      dom.style.backgroundColor = 'var(--primary)'
-      dom.style.borderRadius = '2px'
-      dom.style.boxShadow = '0 0 0 1px var(--primary)'
-      dom.style.opacity = '0.2'
-      if (area.direction === 'top') {
-        dom.style.left = left + 'px'
-        dom.style.top = top - dropIndicatorSize / 2 + 'px'
-        dom.style.width = width + 'px'
-        dom.style.height = dropIndicatorSize + 'px'
-      }
-      if (area.direction === 'left') {
-        dom.style.left = left - dropIndicatorSize / 2 + 'px'
-        dom.style.top = top + 'px'
-        dom.style.width = dropIndicatorSize + 'px'
-        dom.style.height = height + 'px'
-      }
-      document.body.appendChild(dom)
-    })
-  }
+  // debugIndicator = () => {
+  //   this.dropAreas.forEach((area) => {
+  //     const rect = area.node.getBoundingClientRect()
+  //     const { width, height, left, top } = rect
+  //     const dom = document.createElement('div')
+  //     dom.setAttribute('data-area', 'true')
+  //     dom.style.position = 'absolute'
+  //     dom.style.backgroundColor = 'var(--primary)'
+  //     dom.style.borderRadius = '2px'
+  //     dom.style.boxShadow = '0 0 0 1px var(--primary)'
+  //     dom.style.opacity = '0.2'
+  //     if (area.direction === 'top') {
+  //       dom.style.left = left + 'px'
+  //       dom.style.top = top - dropIndicatorSize / 2 + 'px'
+  //       dom.style.width = width + 'px'
+  //       dom.style.height = dropIndicatorSize + 'px'
+  //     }
+  //     if (area.direction === 'left') {
+  //       dom.style.left = left - dropIndicatorSize / 2 + 'px'
+  //       dom.style.top = top + 'px'
+  //       dom.style.width = dropIndicatorSize + 'px'
+  //       dom.style.height = height + 'px'
+  //     }
+  //     document.body.appendChild(dom)
+  //   })
+  // }
 
   removeOverlay = () => {
     if (this.overlay) {
@@ -177,9 +173,8 @@ class LayoutEngine {
     const { width, height, top, left } = rect
     this.indicator = document.createElement('div')
     this.indicator.style.position = 'absolute'
-    this.indicator.style.backgroundColor = 'var(--primary)'
+    this.indicator.style.backgroundColor = 'var(--color-violet-500)'
     this.indicator.style.borderRadius = '2px'
-    this.indicator.style.boxShadow = '0 0 0 1px var(--primary)'
     this.indicator.style.opacity = '0.8'
     if (area.direction === 'top') {
       this.indicator.style.left = left + 'px'
