@@ -1,8 +1,10 @@
 interface TextBlockProps {
-  content: string;
+  block: any
 }
 
-const TextBlock = ({ content }: TextBlockProps) => {
+const TextBlock = (props: TextBlockProps) => {
+  const { block } = props
+  const { content } = block.props
   return (
     <div>
       {content}

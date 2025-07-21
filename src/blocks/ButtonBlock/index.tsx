@@ -1,9 +1,13 @@
 import { Button } from '@/components/ui/button.tsx'
-import type { ComponentProps } from 'react'
 
-const ButtonBlock = (props: ComponentProps<'button'>) => {
+interface Props {
+  block: any
+}
+
+const ButtonBlock = (props: Props) => {
+  const { props: blockProps } = props.block
   return (
-    <Button {...props}/>
+    <Button {...blockProps}/>
   )
 }
 
