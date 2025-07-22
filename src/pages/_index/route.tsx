@@ -3,12 +3,12 @@ import CanvasEditor from '@/pages/_index/editor/CanvasEditor'
 import ConfigPanel from '@/pages/_index/editor/ConfigPanel'
 import { TopHeader } from '@/pages/_index/editor/TopHeader.tsx'
 import { useEffect } from 'react'
-import LayoutEngine from '@/core/layoutEngine.ts'
+import LayoutEngineV2 from '@/core/layoutEngineV2.ts'
 
 // 主页面组件
 const Editor = () => {
   useEffect(() => {
-    const layoutEngine = new LayoutEngine()
+    const layoutEngine = new LayoutEngineV2()
     layoutEngine.init()
   }, [])
   return (
