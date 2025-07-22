@@ -22,8 +22,8 @@ class LayoutEngine {
   init = () => {
     const rawBlockEls = document.querySelectorAll('[data-block-id]')
     this.nodes = Array.from(rawBlockEls)
-    this.nodes.forEach((blockEl) => {
-      blockEl.addEventListener('mousedown', this.onMouseDown)
+    this.nodes.forEach((node) => {
+      node.addEventListener('mousedown', this.onMouseDown)
     })
   }
 
