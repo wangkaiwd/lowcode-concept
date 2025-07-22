@@ -28,7 +28,7 @@ const ComponentPanel = () => {
                   <Tooltip key={component.type}>
                     <TooltipTrigger asChild>
                       <Card
-                        data-block-id={component.type}
+                        data-block-id={`insert-${component.type}`}
                         className="cursor-pointer transition-all duration-200 hover:shadow-md group border-dashed border-2 hover:border-solid hover:border-primary/20"
                       >
                         <CardContent className="p-4">

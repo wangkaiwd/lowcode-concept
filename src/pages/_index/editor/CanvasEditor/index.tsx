@@ -9,9 +9,8 @@ const CanvasEditor = () => {
 
   const renderBlocks = () => {
     if (!blocks.length) { return <Empty/> }
-    return blocks.map((block) => {
-      return <BlockRenderer key={block.id} block={block}/>
-
+    return blocks.map((block, index) => {
+      return <BlockRenderer key={block.id} index={index} count={blocks.length} block={block}/>
     })
   }
 

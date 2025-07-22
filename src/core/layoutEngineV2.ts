@@ -8,6 +8,7 @@ const pauseEvent = (e: any) => {
 
 const offset = 10
 const dropIndicatorSize = 4
+const __debug = true
 
 class LayoutEngineV2 {
   isDragging: boolean = false
@@ -15,8 +16,12 @@ class LayoutEngineV2 {
   overlay: HTMLElement | null = null
   indicator: HTMLElement | null = null
   dropAreas: any[] = []
+  options: any = null
+  insertPayload: any = null
 
-  constructor () {}
+  constructor (options: any) {
+    this.options = options
+  }
 
   init = () => {
     this.instance = interact('[data-block-id]').draggable({
@@ -33,7 +38,9 @@ class LayoutEngineV2 {
     pauseEvent(ev)
     this.createOverlay(ev)
     this.createDropAreas(ev)
-    this.debugIndicator()
+    if (__debug) {
+      this.debugIndicator()
+    }
   }
   onMove = (ev: any) => {
     if (!this.isDragging || !this.overlay) return
@@ -43,21 +50,27 @@ class LayoutEngineV2 {
     this.overlay.style.transform = `translate(${deltaX}px, ${deltaY}px)`
     const area = this.findDropArea(ev)
     if (area) {
+      this.insertPayload = area
       this.createIndicator(area)
     } else {
+      this.insertPayload = null
       this.removeIndicator()
     }
   }
 
-  onEnd = () => {
+  onEnd = (ev: any) => {
     this.isDragging = false
+    const target = ev.target
+    const dragId = target.dataset.blockId
     document.body.style.userSelect = 'auto'
     this.removeOverlay()
     this.removeIndicator()
-    const areas = document.querySelectorAll('[data-area]')
-    areas.forEach(area => {
-      area.remove()
-    })
+    // how to distinct between insert and move?
+    this.options?.onInsert(dragId, this.insertPayload)
+    this.insertPayload = null
+    if (__debug) {
+      this.removeDebugIndicator()
+    }
   }
 
   createOverlay = (ev: any) => {
@@ -83,13 +96,19 @@ class LayoutEngineV2 {
       const { direction, node } = area
       const rect = node.getBoundingClientRect()
       const isInX = clientX > rect.left && clientX < rect.right
-      const isInTop = clientY < rect.top + offset && clientY > rect.top
       const isInY = clientY > rect.top && clientY < rect.bottom
+      const isInTop = clientY < rect.top + offset && clientY > rect.top
       const isInLeft = clientX > rect.left && clientX < rect.left + offset
+      const isInBottom = clientY > rect.bottom - offset && clientY < rect.bottom
+      const isInRight = clientX > rect.right - offset && clientX < rect.right
       if (direction === 'top') {
         return isInX && isInTop
+      } else if (direction === 'left') {
+        return isInY && isInLeft
+      } else if (direction === 'right') {
+        return isInY && isInRight
       }
-      return isInY && isInLeft
+      return isInX && isInBottom
     })
   }
   createDropAreas = (ev: any) => {
@@ -102,62 +121,83 @@ class LayoutEngineV2 {
     })
     nodes.forEach((node: any) => {
       const parentId = node.dataset.containerId
+      const index = node.dataset.blockIndex
+      const count = node.dataset.blockCount
       const id = node.dataset.blockId
       if (parentId && node !== target) {
         const parent = nodeMap.get(parentId)
         const direction = parent ? parent.dataset.containerDirection : 'top'
-        this.dropAreas.push({ id, parentId, direction, node })
+        const area = { id, parentId, direction, node }
+        this.dropAreas.push(area)
+        const isLast = index && count && Number(index) === Number(count) - 1
+        if (isLast) {
+          this.dropAreas.push({
+            id,
+            parentId,
+            direction: direction === 'top' ? 'bottom' : 'right',
+            node,
+          })
+        }
       }
     })
+    console.log('nodes', this.dropAreas)
   }
 
   debugIndicator = () => {
     this.dropAreas.forEach((area) => {
-      const rect = area.node.getBoundingClientRect()
-      const { width, height, left, top } = rect
       const dom = document.createElement('div')
       dom.setAttribute('data-area', 'true')
       dom.style.position = 'absolute'
       dom.style.backgroundColor = 'var(--color-violet-500)'
       dom.style.borderRadius = '2px'
       dom.style.opacity = '0.2'
-      if (area.direction === 'top') {
+      this.createLine(dom, area)
+      document.body.appendChild(dom)
+    })
+  }
+  removeDebugIndicator = () => {
+    const areas = document.querySelectorAll('[data-area]')
+    areas?.forEach(area => {
+      area.remove()
+    })
+  }
+  createLine = (dom: any, area: any) => {
+    const { width, height, left, top, right, bottom } = area.node.getBoundingClientRect()
+    switch (area.direction) {
+      case 'top':
         dom.style.left = left + 'px'
         dom.style.top = top - dropIndicatorSize / 2 + 'px'
         dom.style.width = width + 'px'
         dom.style.height = dropIndicatorSize + 'px'
-      }
-      if (area.direction === 'left') {
-        dom.style.left = left - dropIndicatorSize / 2 + 'px'
+        break
+      case 'left':
+        dom.style.left = left - dropIndicatorSize + 'px'
         dom.style.top = top + 'px'
         dom.style.width = dropIndicatorSize + 'px'
         dom.style.height = height + 'px'
-      }
-      document.body.appendChild(dom)
-    })
+        break
+      case 'right':
+        dom.style.left = right - dropIndicatorSize + 'px'
+        dom.style.top = top + 'px'
+        dom.style.width = dropIndicatorSize + 'px'
+        dom.style.height = height + 'px'
+        break
+      default:
+        dom.style.left = left + 'px'
+        dom.style.top = bottom - dropIndicatorSize / 2 + 'px'
+        dom.style.width = width + 'px'
+        dom.style.height = dropIndicatorSize + 'px'
+    }
   }
   // perf: avoid recreate indicator
   createIndicator = (area: any) => {
     this.removeIndicator()
-    const rect = area.node.getBoundingClientRect()
-    const { width, height, top, left } = rect
     this.indicator = document.createElement('div')
     this.indicator.style.position = 'absolute'
     this.indicator.style.backgroundColor = 'var(--color-violet-500)'
     this.indicator.style.borderRadius = '2px'
     this.indicator.style.opacity = '0.8'
-    if (area.direction === 'top') {
-      this.indicator.style.left = left + 'px'
-      this.indicator.style.top = top - dropIndicatorSize / 2 + 'px'
-      this.indicator.style.width = width + 'px'
-      this.indicator.style.height = dropIndicatorSize + 'px'
-    }
-    if (area.direction === 'left') {
-      this.indicator.style.left = left - dropIndicatorSize + 'px'
-      this.indicator.style.top = top + 'px'
-      this.indicator.style.width = dropIndicatorSize + 'px'
-      this.indicator.style.height = height + 'px'
-    }
+    this.createLine(this.indicator, area)
     document.body.appendChild(this.indicator)
   }
   removeIndicator = () => {

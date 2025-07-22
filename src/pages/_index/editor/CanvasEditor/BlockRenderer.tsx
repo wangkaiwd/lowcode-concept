@@ -5,10 +5,12 @@ import { ContainerContext } from '@/pages/_index/editor/CanvasEditor/ContainerPr
 import ContainerBlock from '@/blocks/ContainerBlock'
 
 interface Props extends ComponentProps<'div'> {
-  block: any; // Define the type of block as needed
+  block: any;
+  index: number;
+  count: number;
 }
 
-const BlockRenderer = ({ block }: Props) => {
+const BlockRenderer = ({ block, index, count }: Props) => {
   const containerContext = useContext(ContainerContext)
   const getBlockComponent = () => {
     switch (block.type) {
@@ -28,6 +30,8 @@ const BlockRenderer = ({ block }: Props) => {
       return (
         <div
           data-block-id={block.id}
+          data-block-index={index}
+          data-block-count={count}
           data-container-id={containerContext.containerId}
           data-container-direction={block.props.direction}
           style={{ ...block.size }}
@@ -40,6 +44,8 @@ const BlockRenderer = ({ block }: Props) => {
     return (
       <div
         data-block-id={block.id}
+        data-block-index={index}
+        data-block-count={count}
         data-container-id={containerContext.containerId}
         style={{ ...block.size }}
         className={'border border-dashed rounded border-blue-200'}

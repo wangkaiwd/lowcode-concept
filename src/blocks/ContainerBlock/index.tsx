@@ -11,8 +11,8 @@ const ContainerBlock = (props: any) => {
       direction={direction}
     >
       <div className={cn('flex', [direction === 'top' ? 'flex-col' : 'flex-row'])}>
-        {children.map((child: any) => {
-          return <BlockRenderer key={child.id} block={child}/>
+        {children.map((child: any, i: number) => {
+          return <BlockRenderer key={child.id} index={i} count={children.length} block={child}/>
         })}
       </div>
     </ContainerProvider>
