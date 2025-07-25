@@ -4,11 +4,23 @@ import ConfigPanel from '@/pages/_index/editor/ConfigPanel'
 import { TopHeader } from '@/pages/_index/editor/TopHeader.tsx'
 import { useEffect } from 'react'
 import LayoutEngineV2 from '@/core/layoutEngineV2.ts'
+import { useBlockActions } from '@/store/useBlockStore.ts'
 
 // 主页面组件
 const Editor = () => {
+  const { insertBlock, moveBlock } = useBlockActions()
   useEffect(() => {
-    const layoutEngine = new LayoutEngineV2()
+    const layoutEngine = new LayoutEngineV2({
+      onInsert (dragId: string, insertPayload: any) {
+        const operateType = dragId.startsWith('insert-') ? 'insert' : 'move'
+        if (operateType === 'insert') {
+          const type = dragId.split('-')[1]
+          insertBlock(type, insertPayload)
+        } else {
+          moveBlock(dragId, insertPayload)
+        }
+      },
+    })
     layoutEngine.init()
   }, [])
   return (

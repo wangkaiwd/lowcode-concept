@@ -65,9 +65,12 @@ class LayoutEngineV2 {
     document.body.style.userSelect = 'auto'
     this.removeOverlay()
     this.removeIndicator()
+    this.dropAreas = []
     // how to distinct between insert and move?
-    this.options?.onInsert(dragId, this.insertPayload)
-    this.insertPayload = null
+    if (this.insertPayload) {
+      this.options?.onInsert(dragId, this.insertPayload)
+      this.insertPayload = null
+    }
     if (__debug) {
       this.removeDebugIndicator()
     }
@@ -140,7 +143,6 @@ class LayoutEngineV2 {
         }
       }
     })
-    console.log('nodes', this.dropAreas)
   }
 
   debugIndicator = () => {

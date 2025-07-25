@@ -5,12 +5,12 @@ import BlockRenderer from '@/pages/_index/editor/CanvasEditor/BlockRenderer.tsx'
 import ContainerProvider from '@/pages/_index/editor/CanvasEditor/ContainerProvider'
 
 const CanvasEditor = () => {
-  const blocks = useBlockStore((state) => state.blocks)
+  const blockTree = useBlockStore((state) => state.blockTree)
 
   const renderBlocks = () => {
-    if (!blocks.length) { return <Empty/> }
-    return blocks.map((block, index) => {
-      return <BlockRenderer key={block.id} index={index} count={blocks.length} block={block}/>
+    if (!blockTree.length) { return <Empty/> }
+    return blockTree.map((block, index) => {
+      return <BlockRenderer key={block.id} index={index} count={blockTree.length} block={block}/>
     })
   }
 

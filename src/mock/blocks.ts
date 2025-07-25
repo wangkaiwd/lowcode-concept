@@ -1,84 +1,108 @@
-export const blocks = [
+export const blockTree = [
   {
     id: 'block-1',
     type: 'text',
-    size: {
-      width: 100,
-      height: 50,
-    },
-    props: {
-      content: 'This is a text block.',
-    },
   },
   {
     id: 'block-2',
     type: 'text',
-    size: {
-      width: 100,
-      height: 50,
-    },
-    props: {
-      content: 'Hello, world!',
-    },
   },
   {
     id: 'block-3',
     type: 'button',
-    size: { width: 200, height: 50 },
-    props: {
-      children: 'Click Me!',
-    },
   },
   {
     id: 'block-4',
     type: 'container',
-    size: { width: 400, height: 600 },
-    props: {
-      direction: 'top',
-    },
     children: [
       {
         id: 'block-5',
         type: 'button',
-        size: { width: 200, height: 50 },
-        props: {
-          children: 'Click Me!',
-        },
       },
       {
         id: 'block-6',
         type: 'text',
-        size: { width: 200, height: 50 },
-        props: {
-          content: 'This is a text block.',
-        },
       },
     ],
   },
   {
     id: 'block-7',
     type: 'container',
-    size: { width: 200, height: 500 },
-    props: {
-      direction: 'left',
-    },
     children: [
       {
         id: 'block-8',
         type: 'button',
-        size: { width: 200, height: 50 },
-        props: {
-          children: 'Click Me!',
-        },
       },
       {
         id: 'block-9',
         type: 'button',
-        size: { width: 200, height: 50 },
-        props: {
-          children: 'block 9',
-        },
       },
     ],
   },
 ]
+
+export const blockMap = {
+  'block-1': {
+    id: 'block-1',
+    type: 'text',
+    parentId: 'root',
+    size: { width: 100, height: 50 },
+    props: { content: 'This is a text block.' },
+  },
+  'block-2': {
+    id: 'block-2',
+    type: 'text',
+    parentId: 'root',
+    size: { width: 100, height: 50 },
+    props: { content: 'Hello, world!' },
+  },
+  'block-3': {
+    id: 'block-3',
+    type: 'button',
+    parentId: 'root',
+    size: { width: 200, height: 50 },
+    props: { children: 'Click Me!' },
+  },
+  'block-4': {
+    id: 'block-4',
+    type: 'container',
+    parentId: 'root',
+    size: { width: 400, height: 600 },
+    props: { direction: 'top' },
+  },
+  'block-5': {
+    id: 'block-5',
+    type: 'button',
+    parentId: 'block-4',
+    size: { width: 200, height: 50 },
+    props: { children: 'Click Me!' },
+  },
+  'block-6': {
+    id: 'block-6',
+    type: 'text',
+    parentId: 'block-4',
+    size: { width: 200, height: 50 },
+    props: { content: 'This is a text block.' },
+  },
+  'block-7': {
+    id: 'block-7',
+    type: 'container',
+    parentId: 'root',
+    size: { width: 400, height: 600 },
+    props: { direction: 'top' },
+  },
+  'block-8': {
+    id: 'block-8',
+    type: 'button',
+    parentId: 'block-7',
+    size: { width: 200, height: 50 },
+    props: { children: 'Click Me!' },
+  },
+  'block-9': {
+    id: 'block-9',
+    type: 'button',
+    parentId: 'block-7',
+    size: { width: 200, height: 50 },
+    props: { children: 'Click Me!' },
+  },
+}

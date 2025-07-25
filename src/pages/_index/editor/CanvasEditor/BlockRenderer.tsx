@@ -3,6 +3,7 @@ import ButtonBlock from '@/blocks/ButtonBlock'
 import { type ComponentProps, useContext } from 'react'
 import { ContainerContext } from '@/pages/_index/editor/CanvasEditor/ContainerProvider/useContainerContext.ts'
 import ContainerBlock from '@/blocks/ContainerBlock'
+import { useBlockStore } from '@/store/useBlockStore.ts'
 
 interface Props extends ComponentProps<'div'> {
   block: any;
@@ -11,15 +12,17 @@ interface Props extends ComponentProps<'div'> {
 }
 
 const BlockRenderer = ({ block, index, count }: Props) => {
+  // think performance
+  const data = useBlockStore((state) => state.blockMap[block.id])
   const containerContext = useContext(ContainerContext)
   const getBlockComponent = () => {
-    switch (block.type) {
+    switch (data.type) {
       case 'text':
-        return <TextBlock block={block}/>
+        return <TextBlock block={data}/>
       case 'button':
-        return <ButtonBlock block={block}/>
+        return <ButtonBlock block={data}/>
       case 'container':
-        return <ContainerBlock block={block}/>
+        return <ContainerBlock block={block} data={data}/>
       default:
         return <div>Unknown block type</div>
     }
@@ -29,12 +32,12 @@ const BlockRenderer = ({ block, index, count }: Props) => {
     if (block.type === 'container') {
       return (
         <div
-          data-block-id={block.id}
+          data-block-id={data.id}
           data-block-index={index}
           data-block-count={count}
           data-container-id={containerContext.containerId}
-          data-container-direction={block.props.direction}
-          style={{ ...block.size }}
+          data-container-direction={data.props.direction}
+          style={{ ...data.size }}
           className={'border border-dashed rounded'}
         >
           {getBlockComponent()}
@@ -43,11 +46,11 @@ const BlockRenderer = ({ block, index, count }: Props) => {
     }
     return (
       <div
-        data-block-id={block.id}
+        data-block-id={data.id}
         data-block-index={index}
         data-block-count={count}
         data-container-id={containerContext.containerId}
-        style={{ ...block.size }}
+        style={{ ...data.size }}
         className={'border border-dashed rounded border-blue-200'}
       >
         {getBlockComponent()}

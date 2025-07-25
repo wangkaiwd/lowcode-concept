@@ -4,7 +4,8 @@ import { cn } from '@/lib/utils.ts'
 
 const ContainerBlock = (props: any) => {
   const { children, id } = props.block
-  const { direction } = props.block.props
+  const { data } = props
+  const { direction } = data.props
   return (
     <ContainerProvider
       containerId={id}
