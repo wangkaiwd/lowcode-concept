@@ -8,7 +8,7 @@ const pauseEvent = (e: any) => {
 
 const offset = 10
 const dropIndicatorSize = 4
-const __debug = true
+const __debug = false
 
 class LayoutEngineV2 {
   isDragging: boolean = false
