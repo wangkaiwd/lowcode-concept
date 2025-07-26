@@ -8,6 +8,10 @@ export const blockTree = [
     type: 'text',
   },
   {
+    id: 'block-10',
+    type: 'image',
+  },
+  {
     id: 'block-3',
     type: 'button',
   },
@@ -53,6 +57,15 @@ export const blockMap = {
     type: 'text',
     parentId: 'root',
     props: { content: 'Hello, world!', size: { width: 100, height: 50 } },
+  },
+  'block-10': {
+    id: 'block-10',
+    type: 'image',
+    parentId: 'root',
+    props: {
+      src: 'https://miro.medium.com/v2/resize:fit:600/1*KUjro0G-igf6P3lvlcDrTQ.png',
+      size: { width: 600, height: 323 },
+    },
   },
   'block-3': {
     id: 'block-3',

@@ -78,11 +78,17 @@ class LayoutEngineV2 {
 
   createOverlay = (ev: any) => {
     const { clientX, clientY, target } = ev
+    const dragId = target.dataset.blockId
     this.overlay = document.createElement('div')
     this.overlay.style.position = 'absolute'
     this.overlay.style.left = clientX + 'px'
     this.overlay.style.top = clientY + 'px'
-    this.overlay.innerHTML = target.innerHTML
+    this.overlay.innerHTML = `
+      <div class="border p-2 rounded">
+        <div>${dragId}</div>
+        <div>${target.innerText}</div>
+      </div>
+    `
     document.body.appendChild(this.overlay)
   }
   removeOverlay = () => {

@@ -3,7 +3,9 @@ import ButtonBlock from '@/blocks/ButtonBlock'
 import { type ComponentProps, useContext } from 'react'
 import { ContainerContext } from '@/pages/_index/editor/CanvasEditor/ContainerProvider/useContainerContext.ts'
 import ContainerBlock from '@/blocks/ContainerBlock'
-import { useBlockStore } from '@/store/useBlockStore.ts'
+import { useBlockActions, useBlockStore } from '@/store/useBlockStore.ts'
+import ImageBlock from '@/blocks/ImageBlock'
+import { cn } from '@/lib/utils.ts'
 
 interface Props extends ComponentProps<'div'> {
   block: any;
@@ -12,8 +14,11 @@ interface Props extends ComponentProps<'div'> {
 }
 
 const BlockRenderer = ({ block, index, count }: Props) => {
+  const { setActiveBlockId } = useBlockActions()
   // think performance
   const data = useBlockStore((state) => state.blockMap[block.id])
+  const activeBlockId = useBlockStore((state) => state.activeBlockId)
+  const isActive = activeBlockId === data.id
   const { size, layout } = data.props
   const containerContext = useContext(ContainerContext)
   const getBlockComponent = () => {
@@ -22,6 +27,8 @@ const BlockRenderer = ({ block, index, count }: Props) => {
         return <TextBlock data={data}/>
       case 'button':
         return <ButtonBlock data={data}/>
+      case 'image':
+        return <ImageBlock data={data}/>
       case 'container':
         return <ContainerBlock block={block} data={data}/>
       default:
@@ -39,7 +46,12 @@ const BlockRenderer = ({ block, index, count }: Props) => {
           data-container-id={containerContext.containerId}
           data-container-direction={layout.direction}
           style={{ ...size }}
-          className={'border border-dashed rounded'}
+          className={cn('border rounded',
+            { 'border-indigo-400': isActive, 'border-2': isActive, 'border-dashed': !isActive })}
+          onClick={(e) => {
+            e.stopPropagation()
+            setActiveBlockId(data.id)
+          }}
         >
           {getBlockComponent()}
         </div>
@@ -52,7 +64,12 @@ const BlockRenderer = ({ block, index, count }: Props) => {
         data-block-count={count}
         data-container-id={containerContext.containerId}
         style={{ ...size }}
-        className={'border border-dashed rounded border-blue-200'}
+        className={cn('border rounded border-blue-200',
+          { 'border-indigo-400': isActive, 'border-2': isActive, 'border-dashed': !isActive })}
+        onClick={(e) => {
+          e.stopPropagation()
+          setActiveBlockId(data.id)
+        }}
       >
         {getBlockComponent()}
       </div>

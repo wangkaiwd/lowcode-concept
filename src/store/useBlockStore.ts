@@ -29,12 +29,9 @@ export const useBlockStore = create<BlockStoreSate>()((set) => ({
     updateBlock (block: any) {
       const { id } = block
       set((state) => {
-        const i = state.blockTree.findIndex((b) => b.id === id)
-        const { blockTree } = state
-        blockTree[i] = block
-        return {
-          blockTree,
-        }
+        const { blockMap } = state
+        blockMap[id] = block
+        return { blockMap: { ...blockMap } }
       })
     },
     insertBlock (type: string, insertPayload: any) {
@@ -95,6 +92,12 @@ export const useBlockStore = create<BlockStoreSate>()((set) => ({
 }))
 
 export const useBlockActions = () => {
-  const { actions } = useBlockStore()
-  return actions
+  return useBlockStore((state) => state.actions)
+}
+
+export const useActiveBlock = () => {
+  return useBlockStore((state) => {
+    const activeBlockId = state.activeBlockId
+    return activeBlockId ? state.blockMap[activeBlockId] : null
+  })
 }

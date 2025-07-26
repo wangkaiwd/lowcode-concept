@@ -1,6 +1,6 @@
 import ComponentPanel from '@/pages/_index/editor/ComponentPanel'
 import CanvasEditor from '@/pages/_index/editor/CanvasEditor'
-import ConfigPanel from '@/pages/_index/editor/ConfigPanel'
+import ConfigPanel from '@/pages/_index/editor/ConfigPannel/ConfigPanel.tsx'
 import { TopHeader } from '@/pages/_index/editor/TopHeader.tsx'
 import { useEffect } from 'react'
 import LayoutEngineV2 from '@/core/layoutEngineV2.ts'
