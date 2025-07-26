@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils.ts'
 const ContainerBlock = (props: any) => {
   const { children, id } = props.block
   const { data } = props
-  const { direction } = data.props
+  const { direction } = data.props.layout
   return (
     <ContainerProvider
       containerId={id}

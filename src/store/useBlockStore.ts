@@ -6,18 +6,26 @@ interface BlockStoreActions {
   updateBlock: (block: any) => void
   insertBlock: (type: string, insertPayload: any) => void
   moveBlock: (dragId: string, insertPayload: any) => void
+  setActiveBlockId: (id: string | null) => void
 }
 
 interface BlockStoreSate {
   blockTree: any[]
   blockMap: Record<string, any>
+  activeBlockId: string | null
   actions: BlockStoreActions
 }
 
 export const useBlockStore = create<BlockStoreSate>()((set) => ({
   blockTree,
   blockMap,
+  activeBlockId: null,
   actions: {
+    setActiveBlockId (id: string | null) {
+      set(() => {
+        return { activeBlockId: id }
+      })
+    },
     updateBlock (block: any) {
       const { id } = block
       set((state) => {

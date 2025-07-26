@@ -14,13 +14,14 @@ interface Props extends ComponentProps<'div'> {
 const BlockRenderer = ({ block, index, count }: Props) => {
   // think performance
   const data = useBlockStore((state) => state.blockMap[block.id])
+  const { size, layout } = data.props
   const containerContext = useContext(ContainerContext)
   const getBlockComponent = () => {
     switch (data.type) {
       case 'text':
-        return <TextBlock block={data}/>
+        return <TextBlock data={data}/>
       case 'button':
-        return <ButtonBlock block={data}/>
+        return <ButtonBlock data={data}/>
       case 'container':
         return <ContainerBlock block={block} data={data}/>
       default:
@@ -36,8 +37,8 @@ const BlockRenderer = ({ block, index, count }: Props) => {
           data-block-index={index}
           data-block-count={count}
           data-container-id={containerContext.containerId}
-          data-container-direction={data.props.direction}
-          style={{ ...data.size }}
+          data-container-direction={layout.direction}
+          style={{ ...size }}
           className={'border border-dashed rounded'}
         >
           {getBlockComponent()}
@@ -50,7 +51,7 @@ const BlockRenderer = ({ block, index, count }: Props) => {
         data-block-index={index}
         data-block-count={count}
         data-container-id={containerContext.containerId}
-        style={{ ...data.size }}
+        style={{ ...size }}
         className={'border border-dashed rounded border-blue-200'}
       >
         {getBlockComponent()}
